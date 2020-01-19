@@ -39,22 +39,29 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>cc.kako.examples.rest</groupId>
+            <artifactId>features</artifactId>
+            <version>${project.version}</version>
+            <type>xml</type>
+            <scope>runtime</scope>
+        </dependency>
+        <!--<dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-            <scope>provided</scope> <!-- XXX: This dep need to be here still? -->
+            <scope>provided</scope> XXX: This dep need to be here still?
         </dependency>
         <dependency>
             <groupId>cc.kako.examples.rest</groupId>
             <artifactId>api</artifactId>
             <version>${project.version}</version>
-            <scope>runtime</scope> <!-- XXX: Sure? -->
+            <scope>runtime</scope> XXX: Sure?
         </dependency>
         <dependency>
             <groupId>cc.kako.examples.rest</groupId>
             <artifactId>server</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>
@@ -73,9 +80,6 @@
                         <bootBundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.saaj-api-1.3/${servicemix-spec.version}</bootBundle>
                     </bootBundles>
                     -->
-                    <bootRepositories>
-                        <repository>mvn:org.apache.aries.jax.rs/org.apache.aries.jax.rs.features/${aries.version}/xml</repository>
-                    </bootRepositories>
                     <bootFeatures>
                         <feature>bundle</feature>
                         <feature>config</feature>
@@ -92,22 +96,10 @@
                         <feature>system</feature>
                         <feature>webconsole</feature>
                         <feature>wrap</feature>
-
-                        <!-- not boot features :( ? -->
-                        <feature>http-whiteboard</feature>
-                        <feature>aries-jax-rs-whiteboard</feature>
-                        <feature>aries-jax-rs-whiteboard-jackson</feature>
-
-                        <feature>transaction</feature>
-                        <feature>jndi</feature>
-                        <feature>pax-jdbc-config</feature>
-                        <feature>pax-jdbc-h2</feature>
-                        <feature>pax-jdbc-pool-dbcp2</feature>
-                        <feature>jdbc</feature>
-                        <feature dependency="true">aries-blueprint</feature>
-                        <feature version="[2,3)">jpa</feature>
-                        <feature version="[2,3)">eclipselink</feature>
                     </bootFeatures>
+                    <installedFeatures>
+                        <feature>restexample-server</feature>
+                    </installedFeatures>
                 </configuration>
                 <!--
                 <executions>

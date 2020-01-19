@@ -31,10 +31,7 @@
                 <configuration>
                     <instructions>
                         <Export-Package>cc.kako.examples.rest.api.*</Export-Package>
-                        <Import-Package>
-                            javax.persistence;version="[2,3)",
-                            *
-                        </Import-Package>
+                        <Import-Package>javax.persistence;version="[2,3)",*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

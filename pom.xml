@@ -12,6 +12,7 @@
 <modules>
     <module>api</module>
     <module>server</module>
+    <module>features</module>
     <module>docker</module>
 </modules>
 
