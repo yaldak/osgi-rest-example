@@ -1,4 +1,4 @@
-FROM openjdk:8-jre
+FROM openjdk:8-jre-slim
 MAINTAINER Yalda Kako <yalda@kako.cc>
 
 ENV KARAF_USER karaf

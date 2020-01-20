@@ -7,8 +7,11 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.log.LogService;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -38,8 +41,22 @@ public class ContactEndpoint {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Contact read(@PathParam("id") final String id) {
+    public Contact read(@PathParam("id") final Long id) {
         return contactProvider.read(id, e -> { })
                 .orElseThrow(() -> new NotFoundException());
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Contact create(final Contact entry) {
+        return contactProvider.create(entry, e -> { })
+                .orElseThrow(() -> new NotFoundException());
+    }
+
+    @DELETE
+    @Path("{id}")
+    public void create(@PathParam("id") final Long id) {
+        contactProvider.delete(id, e -> { });
     }
 }

@@ -36,10 +36,11 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
+<!--
             <plugin>
                 <groupId>org.apache.karaf.tooling</groupId>
                 <artifactId>karaf-maven-plugin</artifactId>
+                <extensions>true</extensions>
                 <executions>
                     <execution>
                         <id>verify</id>
@@ -55,7 +56,7 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
+-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
