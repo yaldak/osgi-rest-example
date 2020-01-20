@@ -15,6 +15,7 @@
     <packaging>bundle</packaging>
 
     <dependencies>
+        <!-- OSGi -->
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi.core</artifactId>
@@ -23,51 +24,50 @@
             <groupId>org.osgi</groupId>
             <artifactId>osgi.cmpn</artifactId>
         </dependency>
+
+        <!-- JAX-RS -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!-- JPA & JTA -->
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>javax.persistence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>javax.transaction-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.interceptor</groupId>
+            <artifactId>javax.interceptor-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.aries.jpa</groupId>
+            <artifactId>org.apache.aries.jpa.api</artifactId>
+        </dependency>
+
+        <!-- Project -->
         <dependency>
             <groupId>cc.kako.examples.rest</groupId>
             <artifactId>api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>javax.persistence</artifactId>
-            <version>${jpa.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>javax.transaction-api</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.interceptor</groupId>
-            <artifactId>javax.interceptor-api</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.aries.jpa</groupId>
-            <artifactId>org.apache.aries.jpa.api</artifactId>
-            <version>2.7.2</version>
-        </dependency>
+        <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.2.4</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -79,8 +79,7 @@
                 <configuration>
                     <instructions>
                         <Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
-                        <Import-Package>javax.persistence;version="[2,3)",*</Import-Package>
-                        <Private-Package>cc.kako.examples.rest.server</Private-Package>
+                        <Import-Package>javax.persistence;version="${versions.jpa-osgi-semver}",*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
@@ -88,8 +87,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>${versions.java}</source>
+                    <target>${versions.java}</target>
                 </configuration>
             </plugin>
         </plugins>

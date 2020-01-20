@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features name="restexample" xmlns="http://karaf.apache.org/xmlns/features/v1.4.0">
 
-    <repository>mvn:org.apache.aries.jax.rs/org.apache.aries.jax.rs.features/${aries.version}/xml</repository>
+    <repository>mvn:org.apache.aries.jax.rs/org.apache.aries.jax.rs.features/${versions.aries-jaxrs}/xml</repository>
 
     <feature name="restexample-api" version="${project.version}">
         <bundle>mvn:cc.kako.examples.rest/api/${project.version}</bundle>
 
-        <feature version="[2,3)">jpa</feature>
+        <feature version="${versions.jpa-osgi-semver}">jpa</feature>
     </feature>
 
     <feature name="restexample-server" version="${project.version}">
         <feature prerequisite="true">scr</feature>
 
-        <feature version="${project.version}">restexample-server-datasource-h2</feature>
-        <feature version="${project.version}">restexample-server-hibernate-search</feature>
-
         <feature>http-whiteboard</feature>
         <feature>aries-jax-rs-whiteboard</feature>
         <feature>aries-jax-rs-whiteboard-jackson</feature>
-
-        <bundle>mvn:com.h2database/h2/1.4.200</bundle>
 
         <feature>transaction</feature>
         <feature>jndi</feature>
@@ -27,10 +22,12 @@
         <feature>pax-jdbc-pool-dbcp2</feature>
         <feature>jdbc</feature>
         <feature dependency="true">aries-blueprint</feature>
-        <feature version="[2,3)">jpa</feature>
-        <feature version="[5,6)">hibernate</feature>
+        <feature version="${versions.jpa-osgi-semver}">jpa</feature>
+        <feature version="${versions.hibernate-osgi-semver}">hibernate</feature>
 
         <feature version="${project.version}">restexample-api</feature>
+        <feature version="${project.version}">restexample-server-datasource-h2</feature>
+        <feature version="${project.version}">restexample-server-hibernate-search</feature>
 
         <bundle>mvn:cc.kako.examples.rest/server/${project.version}</bundle>
     </feature>
@@ -48,22 +45,25 @@
         <capability>
             osgi.service;objectClass=javax.sql.DataSource;effective:=active;osgi.jndi.service.name=restexampledb
         </capability>
+
+        <!-- Recent versions of H2 expose a DataSourceFactory -->
+        <bundle>mvn:com.h2database/h2/${versions.h2}</bundle>
     </feature>
 
     <feature name="restexample-server-hibernate-search" version="${project.version}">
         <feature prerequisite="true">wrap</feature>
 
         <!-- Lucene is not OSGi-ready, so use ServiceMix releases and wrap with karaf where needed -->
-        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jakarta-regexp/1.4_1</bundle>
-        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene/5.5.2_1</bundle>
-        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-analyzers-common/5.5.2_1</bundle>
-        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queryparser/5.5.2_1</bundle>
-        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queries/5.5.2_1</bundle>
-        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-sandbox/5.5.2_1</bundle>
-        <bundle start="true" dependency="true">wrap:mvn:org.apache.lucene/lucene-facet/5.5.2$Bundle-SymbolicName=org.apache.lucene.facet&amp;Export-Package=org.apache.lucene.facet*;version="5.5.2"</bundle>
-        <bundle start="true" dependency="true">wrap:mvn:org.apache.lucene/lucene-misc/5.5.2$Bundle-SymbolicName=org.apache.lucene.misc&amp;Export-Package=org.apache.lucene.uninverting.*;version="5.5.2"</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jakarta-regexp/${versions.lucene-interop-regexp}</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene/${versions.lucene-interop-servicemix}</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-analyzers-common/${versions.lucene-interop-servicemix}</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queryparser/${versions.lucene-interop-servicemix}</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queries/${versions.lucene-interop-servicemix}</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-sandbox/${versions.lucene-interop-servicemix}</bundle>
+        <bundle start="true" dependency="true">wrap:mvn:org.apache.lucene/lucene-facet/${versions.lucene-interop-wrap}$Bundle-SymbolicName=org.apache.lucene.facet&amp;Export-Package=org.apache.lucene.facet*;version="${versions.lucene-interop-wrap}"</bundle>
+        <bundle start="true" dependency="true">wrap:mvn:org.apache.lucene/lucene-misc/${versions.lucene-interop-wrap}$Bundle-SymbolicName=org.apache.lucene.misc&amp;Export-Package=org.apache.lucene.uninverting.*;version="${versions.lucene-interop-wrap}"</bundle>
 
-        <bundle>mvn:org.hibernate/hibernate-search-engine/5.11.4.Final</bundle>
-        <bundle>mvn:org.hibernate/hibernate-search-orm/5.11.4.Final</bundle>
+        <bundle>mvn:org.hibernate/hibernate-search-engine/${versions.hibernate-search}</bundle>
+        <bundle>mvn:org.hibernate/hibernate-search-orm/${versions.hibernate-search}</bundle>
     </feature>
 </features>

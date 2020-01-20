@@ -12,23 +12,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Indexed
-@Table(name="CONTACT")
+@Table(name = "CONTACT")
 public class Contact {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @Field(index= Index.YES, analyze= Analyze.YES, store= Store.YES)
+    @Field(index=Index.YES, analyze=Analyze.YES, store=Store.YES)
     private String name;
 
     private String company;
 
+    @Lob
+    @XmlTransient
+    private byte[] photo;
+
     @Field(index=Index.YES, analyze=Analyze.YES, store=Store.YES)
     private String emailAddress;
 
+    /**
+     * IDE-generated getters/setters; ideally, would generate builder methods here in a generate-sources phase
+     **/
     public Long getId() {
         return this.id;
     }
@@ -37,7 +45,7 @@ public class Contact {
         return company;
     }
 
-    public void setCompany(String company) {
+    public void setCompany(final String company) {
         this.company = company;
     }
 
@@ -45,7 +53,7 @@ public class Contact {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -53,7 +61,15 @@ public class Contact {
         return emailAddress;
     }
 
-    public void setEmailAddress(String emailAddress) {
+    public void setEmailAddress(final String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(final byte[] photo) {
+        this.photo = photo;
     }
 }

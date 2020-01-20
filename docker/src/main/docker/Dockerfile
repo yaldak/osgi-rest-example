@@ -13,15 +13,15 @@ RUN groupadd -r $KARAF_USER --gid=$KARAF_UID && useradd -rm -g $KARAF_USER --uid
 
 RUN mkdir -p /opt/karaf
 
-RUN date
+COPY maven/payload.tar.gz /tmp
 
-COPY ./docker/target/assembly /opt/karaf
+RUN cd /opt/karaf && tar xfz /tmp/payload.tar.gz --strip-components=1
 
 RUN mkdir -p /opt/karaf/data /opt/karaf/data/log \
     && chown -R $KARAF_USER.$KARAF_USER /opt/karaf \
     && chmod 700 /opt/karaf/data
 
-EXPOSE 1099 8101 44444
+EXPOSE 8181
 
 USER $KARAF_USER
 

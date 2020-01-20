@@ -78,6 +78,35 @@
                     </startupFeatures>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <logStdout>true</logStdout>
+                    <images>
+                        <image>
+                            <name>yalda:restexample</name>
+                            <alias>dockerfile</alias>
+                            <build>
+                                <contextDir>${project.basedir}/src/main/docker</contextDir>
+                                <assembly>
+                                    <mode>dir</mode>
+                                    <name>maven/</name>
+                                    <inline>
+                                        <id>karaf</id>
+                                        <files>
+                                            <file>
+                                                <source>${project.build.directory}/payload.tar.gz</source>
+                                            </file>
+                                        </files>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

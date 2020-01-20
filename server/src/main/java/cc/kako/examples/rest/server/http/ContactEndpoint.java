@@ -84,4 +84,46 @@ public class ContactEndpoint {
         //return contactProvider.searchByState(queryText, e -> { });
         return Collections.emptyList();
     }
+
+    @GET
+    @Path("searchByCity")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Contact> searchByCity(@QueryParam("queryText") final String queryText) {
+        //return contactProvider.searchByState(queryText, e -> { });
+        return Collections.emptyList();
+    }
+
+    @GET
+    @Path("{id}/photo")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public byte[] readPhoto(@PathParam("id") final Long id) {
+        return contactProvider.read(id, e -> { })
+                .map(Contact::getPhoto)
+                .orElseThrow(NotFoundException::new);
+    }
+/*
+    @POST
+    @Path("{id}/photo")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public void writePhoto(@PathParam("id") final Long id,
+            @FormDataParam("file") InputStream uploadedInputStream,
+            @FormDataParam("file") FormDataContentDisposition fileDetail) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = uploadedInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+
+            contactProvider.read(id, e -> { })
+                    .map(c -> { c.setPhoto(out.toByteArray()); return c; })
+                    .ifPresent(c -> contactProvider.update(id, c, System.out::println));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+ */
 }
