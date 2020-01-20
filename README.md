@@ -196,7 +196,7 @@ curl -X POST http://localhost:8181/contact/1/photo -d ''
 Returns mediatype `image/png` if found.
 
 ```sh
-curl -X DELETE http://localhost:8181/contact/photo/1
+curl -X DELETE http://localhost:8181/contact/1/photo
 ```
 
 ### Search Contacts by Email or Phone
