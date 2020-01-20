@@ -2,6 +2,7 @@ package cc.kako.examples.rest.server.http;
 
 import cc.kako.examples.rest.api.data.ContactProvider;
 import cc.kako.examples.rest.api.dto.Contact;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -19,6 +20,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,9 +42,13 @@ public class ContactEndpoint {
     @Reference
     ContactProvider contactProvider;
 
+    private URL defaultImageUrl;
+
     @Activate
-    public void activate() {
+    public void activate(final BundleContext context) {
         logger.log(LogService.LOG_INFO, "** ContactEndpoint activated **");
+
+        defaultImageUrl = context.getBundle().getResource("/assets/default-image.png");
     }
 
     @GET
@@ -95,35 +110,44 @@ public class ContactEndpoint {
 
     @GET
     @Path("{id}/photo")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @Produces("image/png")
     public byte[] readPhoto(@PathParam("id") final Long id) {
         return contactProvider.read(id, e -> { })
                 .map(Contact::getPhoto)
                 .orElseThrow(NotFoundException::new);
     }
-/*
+
     @POST
     @Path("{id}/photo")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public void writePhoto(@PathParam("id") final Long id,
-            @FormDataParam("file") InputStream uploadedInputStream,
-            @FormDataParam("file") FormDataContentDisposition fileDetail) {
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    public void writePhoto(@PathParam("id") final Long id) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
+            byte[] data = readFully(defaultImageUrl.openStream());
 
             contactProvider.read(id, e -> { })
-                    .map(c -> { c.setPhoto(out.toByteArray()); return c; })
-                    .ifPresent(c -> contactProvider.update(id, c, System.out::println));
-        }
-        catch (IOException e) {
+                    .ifPresent(c -> {
+                        c.setPhoto(data);
+
+                        contactProvider.update(id, c, e -> {});
+                    });
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
- */
+
+    /**
+     * Read an InputStream into a primitive byte array with an 8K pre-allocated buffer.
+     * We slurp the stream this way because NIO Files & Path do not understand OSGi bundle URIs.
+     *
+     * @param input
+     * @return
+     * @throws IOException
+     */
+    private static byte[] readFully(InputStream input) throws IOException {
+        ReadableByteChannel c = Channels.newChannel(input);
+        ByteBuffer buf = ByteBuffer.allocate(8192);
+        c.read(buf);
+
+        return buf.array();
+    }
 }

@@ -33,7 +33,7 @@
     <versions.jpa>2.2.0</versions.jpa>
     <versions.jpa-osgi-semver>[2,3)</versions.jpa-osgi-semver>
     <versions.jta>1.2</versions.jta>
-    <versions.karaf>4.2.7</versions.karaf>
+    <versions.karaf>4.2.7</versions.karaf> <!-- Jetty is broken in 4.2.7 - MultiPart was removed -->
     <versions.lucene-interop-regexp>1.4_1</versions.lucene-interop-regexp>
     <versions.lucene-interop-servicemix>5.5.2_1</versions.lucene-interop-servicemix>
     <versions.lucene-interop-wrap>5.5.2</versions.lucene-interop-wrap>

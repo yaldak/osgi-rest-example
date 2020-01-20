@@ -11,6 +11,8 @@
 
     <feature name="restexample-server" version="${project.version}">
         <feature prerequisite="true">scr</feature>
+        <feature prerequisite="true">http</feature>
+        <feature prerequisite="true">jetty</feature>
 
         <feature>http-whiteboard</feature>
         <feature>aries-jax-rs-whiteboard</feature>
