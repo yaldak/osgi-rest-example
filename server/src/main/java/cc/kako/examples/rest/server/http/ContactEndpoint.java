@@ -61,7 +61,7 @@ public class ContactEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Contact update(@PathParam("id") final Long id, final Contact entry) {
-        return contactProvider.update(id, entry, e -> { }).orElseThrow(BadRequestException::new);
+        return contactProvider.update(id, entry, System.out::println).orElseThrow(BadRequestException::new);
     }
 
     @DELETE

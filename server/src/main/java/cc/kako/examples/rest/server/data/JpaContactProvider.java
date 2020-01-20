@@ -7,6 +7,7 @@ import org.apache.aries.jpa.template.TransactionType;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.query.dsl.TermTermination;
 import org.osgi.framework.ServiceException;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Component
 public class JpaContactProvider implements ContactProvider {
@@ -66,7 +68,17 @@ public class JpaContactProvider implements ContactProvider {
     }
 
     public Optional<Contact> update(final Long id, final Contact entry, final Consumer<Exception> onError) {
-        return Optional.empty();
+        if (!id.equals(entry.getId())) {
+            onError.accept(new IllegalArgumentException("id does not match entry id"));
+            return Optional.empty();
+        }
+
+        jpaTemplate.tx(TransactionType.RequiresNew, entityManager -> {
+            entityManager.merge(entry);
+            entityManager.flush();
+        });
+
+        return Optional.of(entry);
     }
 
     public void delete(final Long id, final Consumer<Exception> onError) {
@@ -79,27 +91,36 @@ public class JpaContactProvider implements ContactProvider {
     }
 
     public List<Contact> searchByNameOrEmail(final String queryText, final Consumer<Exception> onError) {
-        // XXX: todo - minimum query length suggested
-        // XXX: limit
-        return jpaTemplate.txExpr(TransactionType.Supports, em -> {
-            FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
-            em.getTransaction().begin();
+        // TODO(yalda): This should have throttling in the form of result limits and minimum query text length
 
-            // create native Lucene query unsing the query DSL
-            QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Contact.class).get();
+        // Simple lookahead with wildcard
+        return searchInternal(queryBuilder -> queryBuilder.keyword()
+                .wildcard()
+                .onFields("name", "emailAddress")
+                .matching(queryText + "*"), onError);
+    }
 
-            // Simple look ahead query with wildcard
-            org.apache.lucene.search.Query luceneQuery = qb.keyword()
-                    .wildcard()
-                    .onFields("name", "emailAddress")
-                    .matching(queryText + "*")
-                    .createQuery();
+    private List<Contact> searchInternal(final Function<QueryBuilder, TermTermination> withQueryBuilder,
+            final Consumer<Exception> onError) {
+        return jpaTemplate.txExpr(TransactionType.Supports, entityManager -> {
+            FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+            entityManager.getTransaction().begin();
 
-            // wrap Lucene query in a javax.persistence.Query
+            // Create native Lucene query using the query DSL
+            QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+                    .buildQueryBuilder()
+                    .forEntity(Contact.class)
+                    .get();
+
+            org.apache.lucene.search.Query luceneQuery = withQueryBuilder.apply(queryBuilder).createQuery();
+
+            // Wrap Lucene query in a javax.persistence.Query
             javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Contact.class);
 
             @SuppressWarnings("unchecked")
             List<Contact> result = (List<Contact>) jpaQuery.getResultList();
+
+            entityManager.getTransaction().commit();
 
             return result;
         });
