@@ -79,7 +79,7 @@ public class JpaContactProvider implements ContactProvider {
         });
     }
 
-    public List<Contact> search(final String query, final Consumer<Exception> onError) {
+    public List<Contact> searchByNameOrEmail(final String queryText, final Consumer<Exception> onError) {
         // XXX: todo - minimum query length suggested
         // XXX: limit
         return jpaTemplate.txExpr(TransactionType.Supports, em -> {
@@ -93,7 +93,7 @@ public class JpaContactProvider implements ContactProvider {
             org.apache.lucene.search.Query luceneQuery = qb.keyword()
                     .wildcard()
                     .onFields("name", "emailAddress")
-                    .matching(query + "*")
+                    .matching(queryText + "*")
                     .createQuery();
 
             // wrap Lucene query in a javax.persistence.Query

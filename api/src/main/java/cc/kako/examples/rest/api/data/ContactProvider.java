@@ -17,5 +17,5 @@ public interface ContactProvider {
 
     void delete(final Long id, final Consumer<Exception> onError);
 
-    List<Contact> search(final String query, final Consumer<Exception> onError);
+    List<Contact> searchByNameOrEmail(final String queryText, final Consumer<Exception> onError);
 }
