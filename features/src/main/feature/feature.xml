@@ -10,15 +10,17 @@
     </feature>
 
     <feature name="restexample-server" version="${project.version}">
-        <feature>scr</feature>
+        <feature prerequisite="true">scr</feature>
 
         <feature version="${project.version}">restexample-server-datasource-h2</feature>
+        <feature version="${project.version}">restexample-server-hibernate-search</feature>
 
         <feature>http-whiteboard</feature>
         <feature>aries-jax-rs-whiteboard</feature>
         <feature>aries-jax-rs-whiteboard-jackson</feature>
 
         <bundle>mvn:com.h2database/h2/1.4.200</bundle>
+
         <feature>transaction</feature>
         <feature>jndi</feature>
         <feature>pax-jdbc-config</feature>
@@ -46,5 +48,22 @@
         <capability>
             osgi.service;objectClass=javax.sql.DataSource;effective:=active;osgi.jndi.service.name=contact
         </capability>
+    </feature>
+
+    <feature name="restexample-server-hibernate-search" version="${project.version}">
+        <feature prerequisite="true">wrap</feature>
+
+        <!-- Lucene is not OSGi-ready, so use ServiceMix releases and wrap with karaf where needed -->
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jakarta-regexp/1.4_1</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene/5.5.2_1</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-analyzers-common/5.5.2_1</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queryparser/5.5.2_1</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-queries/5.5.2_1</bundle>
+        <bundle start="true" dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.lucene-sandbox/5.5.2_1</bundle>
+        <bundle start="true" dependency="true">wrap:mvn:org.apache.lucene/lucene-facet/5.5.2$Bundle-SymbolicName=org.apache.lucene.facet&amp;Export-Package=org.apache.lucene.facet*;version="5.5.2"</bundle>
+        <bundle start="true" dependency="true">wrap:mvn:org.apache.lucene/lucene-misc/5.5.2$Bundle-SymbolicName=org.apache.lucene.misc&amp;Export-Package=org.apache.lucene.uninverting.*;version="5.5.2"</bundle>
+
+        <bundle>mvn:org.hibernate/hibernate-search-engine/5.11.4.Final</bundle>
+        <bundle>mvn:org.hibernate/hibernate-search-orm/5.11.4.Final</bundle>
     </feature>
 </features>

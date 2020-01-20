@@ -38,6 +38,7 @@
             <artifactId>javax.persistence</artifactId>
             <version>${jpa.version}</version>
         </dependency>
+
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>javax.transaction-api</artifactId>

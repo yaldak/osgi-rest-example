@@ -16,4 +16,6 @@ public interface ContactProvider {
     Optional<Contact> update(final Long id, final Contact entry, final Consumer<Exception> onError);
 
     void delete(final Long id, final Consumer<Exception> onError);
+
+    List<Contact> search(final String query, final Consumer<Exception> onError);
 }
