@@ -1,8 +1,8 @@
-# Karaf REST Example
+# REST Example
 
 ## Foreword
 
-Hello code reviewer,
+Reviewer,
 
 Thank you for taking the time to look at my example.
 If you have any questions, simply email me (see EOF).
@@ -11,12 +11,18 @@ Yalda
 
 ## Synopsis
 
-This is an enterprise-class RESTful microservice built on top of Apache Karaf.
+This is an "enterprise-almost"-class RESTful microservice built on top of Apache Karaf.
 The build toolchain is docker-ready, allowing you to create images ready for deployment
 on any environment that supports docker.
 
 The purpose of this demo is to showcase a robust solution using OSGi and
 popular Java EE technologies.
+
+The architecture is made in good faith, but can benefit from further iteration (see the Wishlist).
+
+Of course, there are much easier ways to create a simple REST API. I went all out
+because I wanted to show a variety of EE tech. If I were in a time challenge, this could
+have been made very quickly with Express and Node.
 
 ## Technologies
 
@@ -26,6 +32,7 @@ popular Java EE technologies.
 * Hibernate (ORM via JPA)
 * H2 Database (in-memory persistence)
 * JAX-RS + Jackson (via Jetty whiteboard)
+* Java 8 (a solid choice, but I prefer Java 11)
 
 Originally, this project was developed using EclipseLink for ORM.
 I flipped to Hibernate because it is very popular, and let me throw a Lucene engine on top quickly.
@@ -52,7 +59,8 @@ that from the database.
 
 Jetty had recently removed some of their multipart facilities from their OSGi bundle
 descriptors (specifically, from Export-Package) causing my implementation with Servlets 3
-to fail. There is a solution in place for an unreleased version of Pax Web.
+to fail. There is a solution in place for an unreleased version of Pax Web. Dependency and
+classpath hell makes it challenging and not worth to "hack" around this myself.
 
 **Ideally**, I would not have done this with servlets at all. Instead, I would use JAX-RS
 along with the multipart annotations for my respective HTTP container. With direct Jersey or CXF based
@@ -61,7 +69,22 @@ it is not quite that simple for me to access multipart support. I could have sim
 accomplish this, but favored the whiteboard pattern Aries provides for JAX-RS service registration
 over doing so. Long live SCR!
 
+## What's up with `Consumer<Exception>`?
+
+In my data provider interface, I end each method signature with an argument for a
+`Consumer<Exception>`. This is by design, and if I had more time, I would have made efforts
+to propagate error chains from JPA into the `onError` consumer and translate them to
+more semantic HTTP status codes.
+
+The philosophy behind this is to avoid try/catch blocks altogether using `Optional`
+and encourage a truly functional or `Stream`-pipeline based approach with semantics
+introduced in Java 8+.
+
+See `cc.kako.examples.rest.api.util.Try` for some functional Exception fun.
+
 ## Build
+
+Minimum requirements: JDK 8+, Maven 3, Docker, Mac or Linux preferred
 
 The build uses Apache Maven. From the root directory, simply use:
 
@@ -87,49 +110,127 @@ docker run -p 8181:8181 -t yalda:restexample
 
 ## Usage
 
+Import `postman_collection.json` with Postman to get started.
+
+or, curl:
+
 ### Create a Contact
+
 ```sh
 curl -X POST http://localhost:8181/contact -H 'Content-Type: application/json' \
 -d '{
     "name": "Yalda Kako",
     "company": "somewhere",
-    "emailAddress": "yalda@kako.cc"
+    "birthDate": "1992-01-01",
+    "emailAddress": "yalda@kako.cc",
+    "phoneNumberPersonal": "773-124-3333",
+    "phoneNumberWork": "773-124-3333",
+    "address": {
+        "lineOne": "Test123",
+        "lineTwo": "",
+        "city": "Chicago",
+        "state": "IL",
+        "zipCode": "123456"
+    }
 }'
 ```
 
 ### Get All Contacts
+
 ```sh
 curl http://localhost:8181/contact
 ```
 
 ### Get a Contact by ID
+
 ```sh
 curl http://localhost:8181/contact/1
 ```
 
 ### Update a Contact by ID
+
 ```sh
 curl -X PUT http://localhost:8181/contact/1 -H 'Content-Type: application/json' \
 -d '{
+    "id": 1,
     "name": "Yalda Taco",
     "company": "somewhere",
-    "emailAddress": "yalda@kako.cc"
+    "birthDate": "1992-05-04",
+    "emailAddress": "yalda@kako.cc",
+    "phoneNumberPersonal": "773-124-3333",
+    "phoneNumberWork": "773-124-3333",
+    "address": {
+        "lineOne": "Test123",
+        "lineTwo": "",
+        "city": "Chicago",
+        "state": "IL",
+        "zipCode": "123456"
+    }
 }'
 ```
 
+### Delete Contact by ID
+
+```sh
+curl -X DELETE http://localhost:8181/contact/1
+```
+
+### Get a Photo Resource by Contact ID
+
+Returns mediatype `image/png` if found.
+
+```sh
+curl http://localhost:8181/contact/photo/1
+```
+
+### Set a Photo Resource by Contact ID
+
+This is not working, see "The Multipart Problem" above.
+
+```sh
+curl -X POST http://localhost:8181/contact/photo/1 -d ''
+```
+
+### Delete a Photo Resource by Contact ID
+
+Returns mediatype `image/png` if found.
+
+```sh
+curl -X DELETE http://localhost:8181/contact/photo/1
+```
+
+### Search Contacts by Email or Phone
+
+```sh
+curl http://localhost:8181/contact/search/emailOrPhone?q=QUERY
+```
+
+### Search Contacts by City or State
+
+```sh
+curl http://localhost:8181/contact/search/city?q=QUERY
+curl http://localhost:8181/contact/search/state?q=QUERY
+```
 
 ## Wishlist
 
-- **Error handling** is currently immature - the HTTP error codes used are not semantic.
-This could be resolved with more time to work on the project.
+- **Error handling** could be improved - the HTTP response error codes are not always semantic.
+This could be resolved with more time on the project.
 
-- **Checkstyle** would be nice.
+- **Input validation, normalization, and Swagger** are entirely missing - time constraints.
+libphonenumber would have been nice for phone number cleanup, for example.
 
-- **AAA** is missing, but I felt it out of scope for an interview exercise.
+- **surefire and checkstyle**
 
-- ***Generation and generics*** could very well be outfitted from this code.
+- **AAA** is missing.
 
-- ***Gradle*** - I actually prefer Gradle (Groovy is my favorite language), but maven works great too.
+- **Generation and generics** could very well be outfitted from this code.
+
+- **Gradle** - I actually prefer Gradle (Groovy is my favorite language), but maven works great too.
+
+- **JavaDoc** - definitely could have used some on the interfaces
+
+- **Async JAX-RS**
 
 ## Development
 

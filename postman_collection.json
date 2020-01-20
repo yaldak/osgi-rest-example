@@ -1,0 +1,295 @@
+{
+	"info": {
+		"_postman_id": "4a436fcd-c8a2-4c36-a0be-8a52837679f3",
+		"name": "Karaf REST Example",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Contact",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Yalda Kako\",\n\t\"company\": \"somewhere\",\n\t\"birthDate\": \"1992-01-01\",\n\t\"emailAddress\": \"yalda@kako.cc\",\n\t\"phoneNumberPersonal\": \"7737595555\",\n\t\"phoneNumberWork\": \"7737595556\",\n\t\"address\": {\n\t\t\"lineOne\": \"Test123\",\n\t\t\"lineTwo\": \"\",\n\t\t\"city\": \"Chicago\",\n\t\t\"state\": \"IL\",\n\t\t\"zipCode\": \"123456\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8181/contact",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Contact 1",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 1,\n\t\"name\": \"Yalda Taco\",\n\t\"company\": \"somewhere\",\n\t\"birthDate\": \"1992-01-01\",\n\t\"emailAddress\": \"yalda@kako.cc\",\n\t\"phoneNumberPersonal\": \"7737595555\",\n\t\"phoneNumberWork\": \"7737595556\",\n\t\"address\": {\n\t\t\"lineOne\": \"Test123\",\n\t\t\"lineTwo\": \"\",\n\t\t\"city\": \"Chicago\",\n\t\t\"state\": \"IL\",\n\t\t\"zipCode\": \"123456\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8181/contact/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Contact 2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get 1 Photo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact/1/photo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"1",
+						"photo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put 1 Photo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact/1/photo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"1",
+						"photo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete 1 Photo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact/1/photo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"1",
+						"photo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search by email or phone",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact/search/emailOrPhone?q=7737595555",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"search",
+						"emailOrPhone"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "773"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search by city",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact/search/city?q=chicago",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"search",
+						"city"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "chicago"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search by state",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/contact/search/state?q=il",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"contact",
+						"search",
+						"state"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "il"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "05bf80c5-3eac-4a62-adf3-aaf25f21530d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "bdcf38fe-0fb2-4dd8-8d3d-428200dd4222",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -28,7 +28,8 @@ public class TestContactEndpoint {
 
         ContactProvider contactProvider = mock(ContactProvider.class);
 
-        when(contactProvider.readAll(any())).thenReturn(CONTACT_LIST);
+        when(contactProvider.readAll(any()))
+                .thenReturn(CONTACT_LIST);
 
         endpoint.contactProvider = contactProvider;
 
@@ -41,10 +42,19 @@ public class TestContactEndpoint {
     }
 
     private static void populateContactList(final List<Contact> list) {
-        //list.add(generateContact())
+        for (int i = 0; i < 10; i++) {
+            list.add(generateContact(i));
+        }
     }
 
-    private static Contact generateContact() {
-        return null;
+    private static Contact generateContact(final int id) {
+        Contact contact = new Contact();
+
+        contact.setName("name" + id);
+        contact.setCompany("company" + id);
+        contact.setPhoneNumberPersonal("phoneNumberPersonal" + id);
+        contact.setPhoneNumberPersonal("phoneNumberWork" + id);
+
+        return contact;
     }
 }
