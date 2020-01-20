@@ -123,8 +123,8 @@ curl -X POST http://localhost:8181/contact -H 'Content-Type: application/json' \
     "company": "somewhere",
     "birthDate": "1992-01-01",
     "emailAddress": "yalda@kako.cc",
-    "phoneNumberPersonal": "773-124-3333",
-    "phoneNumberWork": "773-124-3333",
+    "phoneNumberPersonal": "7731243334",
+    "phoneNumberWork": "7731243333",
     "address": {
         "lineOne": "Test123",
         "lineTwo": "",
@@ -157,8 +157,8 @@ curl -X PUT http://localhost:8181/contact/1 -H 'Content-Type: application/json' 
     "company": "somewhere",
     "birthDate": "1992-05-04",
     "emailAddress": "yalda@kako.cc",
-    "phoneNumberPersonal": "773-124-3333",
-    "phoneNumberWork": "773-124-3333",
+    "phoneNumberPersonal": "7731243333",
+    "phoneNumberWork": "7731243334",
     "address": {
         "lineOne": "Test123",
         "lineTwo": "",
@@ -202,14 +202,14 @@ curl -X DELETE http://localhost:8181/contact/1/photo
 ### Search Contacts by Email or Phone
 
 ```sh
-curl http://localhost:8181/contact/search/emailOrPhone?q=QUERY
+curl http://localhost:8181/contact/search/emailOrPhone?q=7731243333
 ```
 
 ### Search Contacts by City or State
 
 ```sh
-curl http://localhost:8181/contact/search/city?q=QUERY
-curl http://localhost:8181/contact/search/state?q=QUERY
+curl http://localhost:8181/contact/search/city?q=chicago
+curl http://localhost:8181/contact/search/state?q=il
 ```
 
 ## Wishlist
