@@ -4,10 +4,17 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
+    <!--
+    Useful for testing and debugging:
+
+    <property name="hibernate.show_sql" value="true"/>
+    <property name="javax.persistence.sql-load-script-source" value="META-INF/sql/examples.sql"/>
+    -->
+
     <persistence-unit name="contact-pu" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=contact)</jta-data-source>
+        <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=restexampledb)</jta-data-source>
 
         <class>cc.kako.examples.rest.api.dto.Contact</class>
 
@@ -17,13 +24,22 @@
 
             <property name="javax.persistence.schema-generation.database.action"
                       value="drop-and-create"/>
+        </properties>
+    </persistence-unit>
 
-            <!--
-            Useful for testing and debugging:
+    <persistence-unit name="contactphoto-pu" transaction-type="JTA">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="javax.persistence.sql-load-script-source" value="META-INF/sql/examples.sql"/>
-            -->
+        <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=restexampledb)</jta-data-source>
+
+        <class>cc.kako.examples.rest.api.dto.ContactPhoto</class>
+
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+
+            <property name="javax.persistence.schema-generation.database.action"
+                      value="drop-and-create"/>
         </properties>
     </persistence-unit>
 </persistence>

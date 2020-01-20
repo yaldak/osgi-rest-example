@@ -36,17 +36,17 @@
     </feature>
 
     <feature name="restexample-server-datasource-h2" version="${project.version}">
-        <config name="org.ops4j.datasource-contact">
+        <config name="org.ops4j.datasource-restexampledb">
             osgi.jdbc.driver.class=org.h2.Driver
-            databaseName=contact;DB_CLOSE_DELAY=-1
-            dataSourceName=contact
+            databaseName=restexampledb;DB_CLOSE_DELAY=-1
+            dataSourceName=restexampledb
             user = sa
             password =
             networkProtocol = mem
         </config>
 
         <capability>
-            osgi.service;objectClass=javax.sql.DataSource;effective:=active;osgi.jndi.service.name=contact
+            osgi.service;objectClass=javax.sql.DataSource;effective:=active;osgi.jndi.service.name=restexampledb
         </capability>
     </feature>
 
