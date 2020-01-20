@@ -180,7 +180,7 @@ curl -X DELETE http://localhost:8181/contact/1
 Returns mediatype `image/png` if found.
 
 ```sh
-curl http://localhost:8181/contact/photo/1
+curl http://localhost:8181/contact/1/photo
 ```
 
 ### Set a Photo Resource by Contact ID
@@ -188,7 +188,7 @@ curl http://localhost:8181/contact/photo/1
 This is not working, see "The Multipart Problem" above.
 
 ```sh
-curl -X POST http://localhost:8181/contact/photo/1 -d ''
+curl -X POST http://localhost:8181/contact/1/photo -d ''
 ```
 
 ### Delete a Photo Resource by Contact ID
