@@ -1,14 +1,5 @@
 # REST Example
 
-## Foreword
-
-Reviewer,
-
-Thank you for taking the time to look at my example.
-If you have any questions, simply email me (see EOF).
-
-Yalda
-
 ## Synopsis
 
 This is an "enterprise-almost"-class RESTful microservice built on top of Apache Karaf.
@@ -239,7 +230,3 @@ One shot build and run:
 docker rm -f restexample; mvn clean install docker:build \
     && docker run -p 8181:8181 --name restexample -t yalda:restexample
 ```
-
-# Questions?
-
-Email me at yalda.kako@gmail.com :-)
