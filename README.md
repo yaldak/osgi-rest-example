@@ -225,7 +225,7 @@ libphonenumber would have been nice for phone number cleanup, for example.
 
 ## Development
 
-One shot build and run:
+One shot, dockerized build and run:
 ```sh
 docker rm -f restexample; mvn clean install docker:build \
     && docker run -p 8181:8181 --name restexample -t yalda:restexample
