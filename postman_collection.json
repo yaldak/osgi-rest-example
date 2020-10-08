@@ -38,7 +38,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Yalda Kako\",\n\t\"company\": \"somewhere\",\n\t\"birthDate\": \"1992-01-01\",\n\t\"emailAddress\": \"yalda@kako.cc\",\n\t\"phoneNumberPersonal\": \"7737595555\",\n\t\"phoneNumberWork\": \"7737595556\",\n\t\"address\": {\n\t\t\"lineOne\": \"Test123\",\n\t\t\"lineTwo\": \"\",\n\t\t\"city\": \"Chicago\",\n\t\t\"state\": \"IL\",\n\t\t\"zipCode\": \"123456\"\n\t}\n}"
+					"raw": "{\n\t\"name\": \"Test Man\",\n\t\"company\": \"somewhere\",\n\t\"birthDate\": \"1981-01-01\",\n\t\"emailAddress\": \"test@test.cc\",\n\t\"phoneNumberPersonal\": \"7737771111\",\n\t\"phoneNumberWork\": \"7737782222\",\n\t\"address\": {\n\t\t\"lineOne\": \"Test123\",\n\t\t\"lineTwo\": \"\",\n\t\t\"city\": \"Chicago\",\n\t\t\"state\": \"IL\",\n\t\t\"zipCode\": \"123456\"\n\t}\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8181/contact",
@@ -194,7 +194,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8181/contact/search/emailOrPhone?q=7737595555",
+					"raw": "http://localhost:8181/contact/search/emailOrPhone?q=7732224444",
 					"protocol": "http",
 					"host": [
 						"localhost"
