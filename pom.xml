@@ -44,7 +44,7 @@
     <versions.osgi>6.0.0</versions.osgi>
     <versions.servicemix-spec>2.9.0</versions.servicemix-spec>
 
-    <versions.junit>4.13</versions.junit>
+    <versions.junit>4.13.1</versions.junit>
     <versions.mockito>3.2.4</versions.mockito>
 </properties>
 
