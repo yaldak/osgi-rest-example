@@ -110,10 +110,10 @@ or, curl:
 ```sh
 curl -X POST http://localhost:8181/contact -H 'Content-Type: application/json' \
 -d '{
-    "name": "Yalda Kako",
+    "name": "John Doe",
     "company": "somewhere",
-    "birthDate": "1992-01-01",
-    "emailAddress": "yalda@kako.cc",
+    "birthDate": "1970-01-01",
+    "emailAddress": "test@test.net",
     "phoneNumberPersonal": "7731243334",
     "phoneNumberWork": "7731243333",
     "address": {
@@ -144,10 +144,10 @@ curl http://localhost:8181/contact/1
 curl -X PUT http://localhost:8181/contact/1 -H 'Content-Type: application/json' \
 -d '{
     "id": 1,
-    "name": "Yalda Taco",
+    "name": "John Taco",
     "company": "somewhere",
-    "birthDate": "1992-05-04",
-    "emailAddress": "yalda@kako.cc",
+    "birthDate": "1970-01-01",
+    "emailAddress": "test@test.net",
     "phoneNumberPersonal": "7731243333",
     "phoneNumberWork": "7731243334",
     "address": {
